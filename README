@@ -56,7 +56,46 @@ Part 1 -- Winning the Lottery
       allowed in this exercise.
 
       Success is defined by the program printing "You win!" (plus
-      a newline) as its last line of output.
+      a newline) as its last line of output. We will run each program
+      multiple times, and it must always win.
 
 Part 2 -- Exploiting a Vulnerable Program
+
+   We have provided you with a vulnerable program in stack.c -- you
+   are not to modify this. The Makefile will compile this as needed
+   to allow us to exploit it, including making it setuid-root.
+
+   This program has a function bof(), which includes a buffer-overflow
+   vulnerability. The program reads 517 bytes from a file named
+   "badfile", and then uses strcpy() to write this into a buffer
+   of length 32. The file will be your attack vector.
+
+   What to do:
+
+      Write a program named exploit_1.c that generates badfile. It will put
+      the following at appropriate places in badfile:
+
+       - shellcode
+       - target address in the stack to which control should go
+	 when bof() returns; ideally, the address of shellcode
+       - NOP instructions to increase the chance of success
+
+      exploit_1 should have exactly one command-line argument: the
+      target address in hex format (eg, 0x1234abc). We have provided
+      you with an initial skeleton for exploit_1.c
+
+      Compile and run your program to generate badfile, and then
+      run the vulnerable stack program. If your exploit is implemented
+      correctly, then buf() returns it will execute your shellcode,
+      giving you a root shell. If the target address is 0x1234abc,
+      you would run
+
+        $ make
+        $ ./exploit_1 0x1234abc
+        $ ./stack
+        # <-- You've got a root shell!
+
+   Note that when you've obtained a root shell, running "id" will
+   reveal that while you have an euid of 0, your uid is still your
+   non-root account. This difference matters for some programs.
 

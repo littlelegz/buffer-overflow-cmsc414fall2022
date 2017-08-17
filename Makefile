@@ -6,3 +6,7 @@ CC := gcc
 all: $(PROGS)
 	@echo $(PROGS)
 
+stack: stack.c
+	$(CC) -o $@ $(CFLAGS) $<
+	sudo chmod 4755 stack
+
