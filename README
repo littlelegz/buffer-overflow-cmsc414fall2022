@@ -1,6 +1,5 @@
-In this assignment, you will explore buffer overflows, as well as
-some other attacks. Make sure that you test everything on the
-official course VM.
+In this assignment, you will explore buffer overflows. Make sure
+that you test everything on the official course VM.
 
 Security Mechanisms
 
@@ -39,27 +38,7 @@ Security Mechanisms
 
      For this reason, we will use the zsh shell in our exploits.
 
-Part 1 -- Winning the Lottery
-
-   The file lottery.c.tmpl contains a simple program that picks a
-   random number, and compares it with a value selected by a function
-   that you will write. Your task is to provide us with three
-   different versions of this function that "win" the lottery 100%
-   of the time. These functions do not have to employ buffer
-   overflows, though they may.
-
-   What to do:
-
-      Copy lottery.c.tmpl to files lottery1.c, lottery2.c, and
-      lottery3.c  In each of these, modify the function your_fcn()
-      as you see fit. You may not modify main(). Hardcoding is
-      allowed in this exercise.
-
-      Success is defined by the program printing "You win!" (plus
-      a newline) as its last line of output. We will run each program
-      multiple times, and it must always win.
-
-Part 2 -- Exploiting a Vulnerable Program
+Exploiting a Vulnerable Program
 
    We have provided you with a vulnerable program in stack.c -- you
    are not to modify this. The Makefile will compile this as needed
