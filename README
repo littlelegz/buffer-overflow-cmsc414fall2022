@@ -78,3 +78,11 @@ Exploiting a Vulnerable Program
    reveal that while you have an euid of 0, your uid is still your
    non-root account. This difference matters for some programs.
 
+   How to submit your assignment:
+
+      Create a file in your repository called "address", which
+      contains a working argument to exploit_1 as the first line.
+      Commit and push your repository to the server, then run
+      "tools/get-hash". The output of this should then be entered
+      in the text box on ELMS.
+
