@@ -10,6 +10,6 @@ clean:
 	rm $(PROGS)
 
 stack: stack.c
-	$(CC) -o $@ $(CFLAGS) $<
+	sudo $(CC) -o $@ $(CFLAGS) $<
 	sudo chmod 4755 stack
 
