@@ -1,6 +1,6 @@
 CFILES := $(wildcard *.c)
 PROGS := $(patsubst %.c,%,$(CFILES))
-CFLAGS := -fno-stack-protector -z execstack
+CFLAGS := -fno-stack-protector -z execstack -ggdb
 CC := gcc
 
 all: $(PROGS)
