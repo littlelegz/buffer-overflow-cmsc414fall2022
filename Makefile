@@ -1,13 +1,13 @@
 CFILES := $(wildcard *.c)
 PROGS := $(patsubst %.c,%,$(CFILES))
-CFLAGS := -fno-stack-protector -z execstack -ggdb
+CFLAGS := -ggdb -static -fno-stack-protector -z execstack
 CC := gcc
 
 all: $(PROGS)
 	@echo $(PROGS)
 
 clean:
-	rm $(PROGS)
+	rm -f $(PROGS)
 
 stack: stack.c
 	sudo $(CC) -o $@ $(CFLAGS) $<

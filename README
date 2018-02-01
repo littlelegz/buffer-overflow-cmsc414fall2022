@@ -22,22 +22,6 @@ Security Mechanisms
      configuration file for this with the "visudo" command. The
      configuration file is /etc/sudoers (see the manpage for sudoers).
 
-   * Finally, the bash shell provides some additional defenses. We
-     are going to be exploiting "set-root-uid" executables, which
-     allow a non-root user to perform an action with root privilege.
-     When you run a program, you have a real uid (ruid) and an
-     effective uid (euid). These are usually the same, except when
-     you run a set-root-uid executable, in which case your euid
-     becomes 0 (the root uid).
-
-     If the program exits abnormally, it is unable to reset the
-     euid to the user's ruid. In order to prevent the types of
-     attacks we'll be exploring, bash checks the ruid and euid
-     before spawning a shell. If these differ, it first drops its
-     root privileges, setting euid back to ruid.
-
-     For this reason, we will use the zsh shell in our exploits.
-
 Exploiting a Vulnerable Program
 
    We have provided you with a vulnerable program in stack.c -- you
@@ -46,8 +30,18 @@ Exploiting a Vulnerable Program
 
    This program has a function bof(), which includes a buffer-overflow
    vulnerability. The program reads 517 bytes from a file named
-   "badfile", and then uses strcpy() to write this into a buffer
+   "badfile", and then uses memcpy() to write this into a buffer
    of length 32. The file will be your attack vector.
+
+   We have provided you with an initial skeleton for exploit_1.c.
+   The term shellcode literally refers to code that starts a command
+   shell, like bash. However, nowadays shellcode is considered to be
+   any byte code that can be inserted into an exploit to accomplish
+   a particular objective. The shellcode provided in exploit_1.c is
+   designed to execute the command "cat /var/secret/token". When run
+   normally, this command is permission denied since /var is a root
+   subdirectory and thus protected. You will attempt to execute this
+   command by exploiting the buffer overflow vulnerability in stack.c 
 
    What to do:
 
@@ -60,23 +54,19 @@ Exploiting a Vulnerable Program
        - NOP instructions to increase the chance of success
 
       exploit_1 should have exactly one command-line argument: the
-      target address in hex format (eg, 0x1234abc). We have provided
-      you with an initial skeleton for exploit_1.c
+      target address in hex format (eg, 0x1234abc).
 
       Compile and run your program to generate badfile, and then
       run the vulnerable stack program. If your exploit is implemented
-      correctly, then buf() returns it will execute your shellcode,
-      giving you a root shell. If the target address is 0x1234abc,
-      you would run
+      correctly, then when bof() returns it will execute your shellcode,
+      printing the contents of /var/secret/token.
+
+      If the target address is 0x1234abc, you would run:
 
         $ make
         $ ./exploit_1 0x1234abc
         $ ./stack
-        # <-- You've got a root shell!
-
-   Note that when you've obtained a root shell, running "id" will
-   reveal that while you have an euid of 0, your uid is still your
-   non-root account. This difference matters for some programs.
+        $ seekrit  <-- Contents of /var/secret/token
 
    How to submit your assignment:
 
