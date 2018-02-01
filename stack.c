@@ -16,7 +16,7 @@ int bof(char *str)
   char buffer[32];
 
   /* The following allows buffer overflow */ 
-  strcpy(buffer, str);
+  memcpy(buffer, str, BSIZE);
 
   return 1;
 }
