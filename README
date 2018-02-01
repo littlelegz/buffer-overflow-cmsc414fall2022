@@ -35,13 +35,13 @@ Exploiting a Vulnerable Program
 
    We have provided you with an initial skeleton for exploit_1.c.
    The term shellcode literally refers to code that starts a command
-   shell, like bash. However, nowadays shellcode is considered to be
-   any byte code that can be inserted into an exploit to accomplish
-   a particular objective. The shellcode provided in exploit_1.c is
-   designed to execute the command "cat /var/secret/token". When run
-   normally, this command is permission denied since /var is a root
-   subdirectory and thus protected. You will attempt to execute this
-   command by exploiting the buffer overflow vulnerability in stack.c 
+   shell, like bash. However, nowadays shellcode is considered to
+   be any byte code that can be inserted into an exploit to accomplish
+   a particular objective. The shellcode provided in exploit_1.c
+   is designed to execute the command "cat /var/secret/token". When
+   run normally, this command is permission denied since /var/secret
+   is accessible only to root. You will attempt to execute this
+   command by exploiting the buffer overflow vulnerability in stack.c
 
    What to do:
 
