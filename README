@@ -66,7 +66,7 @@ Exploiting a Vulnerable Program
         $ make
         $ ./exploit_1 0x1234abc
         $ ./stack
-        $ seekrit  <-- Contents of /var/secret/token
+        seekrit  <-- Contents of /var/secret/token
 
    How to submit your assignment:
 
