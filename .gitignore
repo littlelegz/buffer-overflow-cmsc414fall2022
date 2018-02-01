@@ -1,0 +1,8 @@
+exploit_1
+stack
+badfile
+*.o
+*.out
+*.log
+core
+

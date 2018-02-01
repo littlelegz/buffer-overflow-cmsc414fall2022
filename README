@@ -82,7 +82,6 @@ Exploiting a Vulnerable Program
 
       Create a file in your repository called "address", which
       contains a working argument to exploit_1 as the first line.
-      Commit and push your repository to the server, then run
-      "tools/get-hash". The output of this should then be entered
-      in the text box on ELMS.
+      You should also include exploit_1.c in your submission.
+      Commit and push your repository to the server.
 
