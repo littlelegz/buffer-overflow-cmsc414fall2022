@@ -11,12 +11,12 @@
 
 #define BSIZE 517
 
-int bof(char *str)
+int bof(char *str, unsigned int filesize)
 {
   char buffer[32];
 
   /* The following allows buffer overflow */ 
-  memcpy(buffer, str, BSIZE);
+  memcpy(buffer, str, filesize);
 
   return 1;
 }
@@ -27,10 +27,11 @@ int main(int argc, char **argv)
   char str[BSIZE];
   FILE *badfile;
   char *badfname = "badfile";
+  unsigned int filesize;
 
   badfile = fopen(badfname, "r");
-  fread(str, sizeof(char), BSIZE, badfile);
-  bof(str);
+  filesize = fread(str, sizeof(char), BSIZE, badfile);
+  bof(str, filesize);
 
   printf("Returned Properly\n");
   return 1;
