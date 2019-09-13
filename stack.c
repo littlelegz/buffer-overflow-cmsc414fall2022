@@ -12,6 +12,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#define BSIZE 509
+
 int length(FILE *fp) {
   struct stat file_stats;
   fstat(fileno(fp), &file_stats);
@@ -31,6 +33,7 @@ int bof(char *str, unsigned int filesize)
 
 int main(int argc, char **argv)
 {
+  char dummy[BSIZE];
   char *str;
   FILE *badfile;
   char *badfname = "badfile";
