@@ -8,8 +8,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
-#define BSIZE 517
+#define BSIZE 509
+
+int length(FILE *fp) {
+  struct stat file_stats;
+  fstat(fileno(fp), &file_stats);
+  return file_stats.st_size;
+}
 
 int bof(char *str, unsigned int filesize)
 {
@@ -24,13 +33,16 @@ int bof(char *str, unsigned int filesize)
 
 int main(int argc, char **argv)
 {
-  char str[BSIZE];
+  char dummy[BSIZE];
+  char *str;
   FILE *badfile;
   char *badfname = "badfile";
   unsigned int filesize;
 
   badfile = fopen(badfname, "r");
-  filesize = fread(str, sizeof(char), BSIZE, badfile);
+  filesize = length(badfile);
+  str = malloc(filesize);
+  fread(str, sizeof(char), filesize, badfile);
   bof(str, filesize);
 
   printf("Returned Properly\n");
