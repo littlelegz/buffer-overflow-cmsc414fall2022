@@ -8,42 +8,54 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <arpa/inet.h>
+#include <sys/errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/socket.h>
 #include <unistd.h>
 
-#define BSIZE 509
-
-int length(FILE *fp) {
-  struct stat file_stats;
-  fstat(fileno(fp), &file_stats);
-  return file_stats.st_size;
-}
-
-int bof(char *str, unsigned int filesize)
+ssize_t bof(int sockfd)
 {
   char buffer[32];
+  char resp[32];
+  char str[1001];
+  struct sockaddr_in addr;
+  struct sockaddr* saddr = (struct sockaddr*) &addr;
+  socklen_t addr_size = sizeof(addr);
+  ssize_t s;
 
-  /* The following allows buffer overflow */ 
-  memcpy(buffer, str, filesize);
-
-  return 1;
+  bzero(str,1001);
+  bzero(buffer,32);
+  s = recvfrom(sockfd, str, 1000, 0, saddr, &addr_size);
+  printf("server received %d bytes\n",s);
+  memcpy(buffer,str,s);
+  sprintf(resp,str);
+  s = sendto(sockfd, resp, strlen(resp), 0, saddr, addr_size);
+  if ( s < 0 ) {
+    printf("send failed with error %d\n", errno);
+  }
+  return s;
 }
 
 
 int main(int argc, char **argv)
 {
-  char dummy[BSIZE];
-  char *str;
-  FILE *badfile;
-  char *badfname = "badfile";
-  unsigned int filesize;
+  int s = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
+  struct sockaddr_in addr;
+  bzero(&addr, sizeof(addr));
+  addr.sin_family = AF_INET;
+  addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  addr.sin_port = htons(8000);
+  bind(s, (struct sockaddr*)&addr, sizeof(addr));
 
-  badfile = fopen(badfname, "r");
-  filesize = length(badfile);
-  str = malloc(filesize);
-  fread(str, sizeof(char), filesize, badfile);
-  bof(str, filesize);
+  while(1) {
+    ssize_t r = bof(s);
+    if ( r < 0 ) {
+      break;
+    }
+    printf("sent %d bytes\n", r);
+  }
 
   printf("Returned Properly\n");
   return 1;
