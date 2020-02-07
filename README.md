@@ -59,7 +59,7 @@ and `run_exploit.sh`. You can also start an interactive container, so
 that you can run the programs multiple times without restarts, as well
 as using `gdb`. To do this, run:
 
-    docker run -ti --rm -v $(pwd):/opt baseline
+    docker run -ti --rm -v "$(pwd):/opt" baseline
 
 Because the container captures the output from your programs, if you've used
 the `run_stack.sh` script you can view stdout and stderr with:
