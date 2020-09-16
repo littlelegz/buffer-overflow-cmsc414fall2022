@@ -9,12 +9,14 @@ that you test everything using the official course docker image.
    by default.
 
  * Additionally, the operating system performs address space
-   randomization (ASLR), which does not prevent buffer overflows,
-   but makes it much harder for them to result in a successful
-   exploit. You will need to work around this for this project!
-   As a hint, ASLR will move things around in blocks, so stack and
-   heap offsets will differ between runs, but the fundamental
-   structure will not be changed.
+   randomization (ASLR), which does not prevent buffer overflows, but
+   makes it much harder for them to result in a successful
+   exploit. You will need to work around this for this project!  As a
+   hint, ASLR will move things around in blocks, so stack and heap
+   offsets will differ between runs, but the fundamental structure
+   will not be changed, so if you know the distance (in bytes) between
+   two values on the stack, that distance will remain constant from
+   one run to another.
 
 ## Exploiting a Vulnerable Program
 
@@ -26,8 +28,12 @@ container running the `baseline` image.
 
 This program has a function `bof()`, which includes a buffer-overflow
 vulnerability. The program reads from the network, does some useless
-work with the provided data, and echoes back what you sent it. You
-will be attacking it over the network.
+work with the provided data, and echoes back what you sent it. It
+echoes the received message using the `sprintf(s,fmt,...)` function,
+which behaves like `printf(fmt,...)`, except that the output is
+written to the string `s` rather than standard output. This is a great
+way to create formatted strings in C. You will be attacking it over
+the network.
 
 We have provided you with an initial skeleton for `exploit_1.c`.  The
 term shellcode literally refers to code that starts a command shell,
@@ -38,6 +44,11 @@ execute the command `cat /var/secret/token`. When run normally, this
 command results in permission denied since `/var/secret` is accessible
 only to root. You will attempt to execute this command by exploiting
 the buffer overflow vulnerability in `stack.c`
+
+As a tip, you *will* need to send more than one message to the `stack`
+program in order for your attack to succeed. Take a careful look at
+the function `bof()` in `stack.c`, and look for the potentially
+exploitable bugs.
 
 ### What to do:
 
