@@ -17,23 +17,25 @@
 
 ssize_t bof(int sockfd)
 {
-  char buffer[32];
-  char resp[32];
+  char buffer[16];
+  char resp[16];
   char str[1001];
   struct sockaddr_in addr;
   struct sockaddr* saddr = (struct sockaddr*) &addr;
   socklen_t addr_size = sizeof(addr);
   ssize_t s;
 
-  bzero(str,1001);
-  bzero(buffer,32);
+  bzero(str,sizeof(str));
+  bzero(buffer,sizeof(buffer));
   s = recvfrom(sockfd, str, 1000, 0, saddr, &addr_size);
   printf("server received %d bytes\n",s);
+  fflush(stdout); // This clears the output buffer, writing to STDOUT
   memcpy(buffer,str,s);
   sprintf(resp,str);
   s = sendto(sockfd, resp, strlen(resp), 0, saddr, addr_size);
   if ( s < 0 ) {
     printf("send failed with error %d\n", errno);
+    fflush(stdout);
   }
   return s;
 }
