@@ -88,5 +88,5 @@ push your solution, so that it is uploaded to the server:
 
     git add exploit_1.c
     git commit
-    git push origin master
+    git push origin main
 
